@@ -1,49 +1,103 @@
-# Starlight Starter Kit: Basics
+# Dokumentasi Laravel Security Monitor (Astro + Starlight)
 
-[![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
+Situs dokumentasi resmi untuk paket
+[`robyajo/laravel-security-monitor`](../README.md), dibangun dengan **Astro** dan
+tema **[Starlight](https://starlight.astro.build)**.
+
+> ℹ️ Folder `web/` **tidak disertakan** saat paket dipasang lewat Composer
+> (`export-ignore` pada `.gitattributes` + `archive.exclude` pada `composer.json`).
+> Ini murni aset pengembangan/situs, bukan bagian dari runtime paket.
+
+---
+
+## Menjalankan
+
+```bash
+npm install
+npm run dev        # http://localhost:4321
+```
+
+## Perintah
+
+| Perintah                     | Fungsi                                               |
+| :--------------------------- | :--------------------------------------------------- |
+| `npm run dev`                | Server pengembangan (hot reload)                     |
+| `npm run build`              | Build statis ke `dist/`                              |
+| `npm run preview`            | Pratinjau hasil build secara lokal                   |
+| `node scripts/sync-docs.mjs` | Sinkronkan `../documents/*.md` → `src/content/docs/` |
+
+---
+
+## Sumber Konten
+
+Bab Markdown di `../documents/<section>/NN-*.md` adalah **sumber tunggal
+(single source of truth)**. Skrip `scripts/sync-docs.mjs` menyalinnya ke
+`src/content/docs/` sekaligus:
+
+- membersihkan slug (menghapus awalan nomor, mis. `01-introduction` → `introduction`),
+- memindahkan H1 pertama ke frontmatter `title` (agar tidak tampil ganda),
+- menambahkan `description` (untuk SEO) dan `sidebar.order`.
+
+Setelah mengubah berkas di `../documents/`, jalankan ulang:
+
+```bash
+node scripts/sync-docs.mjs
+npm run build
+```
+
+> Halaman `src/content/docs/index.mdx` (landing) dan `404.md` ditulis manual dan
+> **tidak disentuh** oleh skrip sinkronisasi.
+
+---
+
+## Struktur
 
 ```
-npm create astro@latest -- --template starlight
-```
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro + Starlight project, you'll see the following folders and files:
-
-```
-.
+web/
+├── astro.config.mjs            # konfigurasi Starlight (sidebar, locale id, logo, sitemap)
+├── scripts/
+│   └── sync-docs.mjs           # generator konten dari ../documents
 ├── public/
-├── src/
-│   ├── assets/
-│   ├── content/
-│   │   └── docs/
-│   └── content.config.ts
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
+│   └── favicon.svg
+└── src/
+    ├── assets/logo.svg
+    ├── components/
+    │   └── Head.astro          # override <head>: menyuntikkan skrip Mermaid
+    ├── scripts/
+    │   └── mermaid.ts          # render diagram Mermaid (impor dinamis)
+    ├── styles/custom.css       # branding & gaya diagram
+    ├── content.config.ts       # koleksi docs + i18n
+    ├── content/i18n/id.json    # override string UI Indonesia
+    └── content/docs/
+        ├── index.mdx           # landing (splash)
+        ├── 404.md              # halaman 404 kustom
+        ├── getting-started/    # 3 bab
+        ├── core-architecture/  # 4 bab
+        ├── security-modules/   # 6 bab
+        ├── api-reference/      # 4 bab
+        ├── cli-automation/     # 2 bab
+        ├── webserver-hardening/# 3 bab
+        └── integration-guides/ # 3 bab
 ```
 
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
+---
 
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
+## Fitur
 
-Static assets, like favicons, can be placed in the `public/` directory.
+- **Pencarian instan** (Pagefind) — indeks dibangun otomatis saat `build`.
+- **Diagram Mermaid** dirender otomatis; pustaka `mermaid` diimpor dinamis
+  sehingga hanya diunduh pada halaman yang benar-benar memuat diagram.
+- **Tema terang/gelap**, daftar isi (ToC), navigasi sebelumnya/berikutnya, dan
+  sitemap.
+- **UI berbahasa Indonesia** (`defaultLocale: 'id'`).
+- **Navigasi cepat** dengan `prefetch`.
 
-## 🧞 Commands
+---
 
-All commands are run from the root of the project, from a terminal:
+## Deploy
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Hasil `npm run build` adalah situs statis di `dist/`. Unggah ke GitHub Pages,
+Netlify, Vercel, Cloudflare Pages, atau hosting statis mana pun.
 
-## 👀 Want to learn more?
-
-Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
+Sesuaikan `site` pada `astro.config.mjs` dengan URL publik Anda — nilai ini
+dipakai untuk tag canonical dan `sitemap-index.xml`.

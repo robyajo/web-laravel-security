@@ -1,0 +1,14 @@
+---
+// Override komponen Head Starlight: pertahankan seluruh tag <head> bawaan,
+// lalu tambahkan skrip render Mermaid (di-bundle, hanya memuat pustaka mermaid
+// saat halaman benar-benar memuat diagram).
+const { head } = Astro.locals.starlightRoute;
+---
+
+{head.map(({ tag: Tag, attrs, content }) => <Tag {...attrs} set:html={content} />)}
+
+<script>
+	import { initMermaid } from '../scripts/mermaid';
+
+	initMermaid();
+</script>

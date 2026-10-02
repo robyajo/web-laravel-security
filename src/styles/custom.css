@@ -1,0 +1,42 @@
+/* Branding & penyesuaian tampilan Laravel Security Monitor */
+
+/* Aksen warna: langit malam -> indigo (selaras dengan logo) */
+:root {
+	--sl-color-accent-low: #082f49;
+	--sl-color-accent: #0ea5e9;
+	--sl-color-accent-high: #bae6fd;
+}
+
+:root[data-theme='light'] {
+	--sl-color-accent-low: #e0f2fe;
+	--sl-color-accent: #0284c7;
+	--sl-color-accent-high: #075985;
+}
+
+/* Diagram Mermaid: dibingkai, terpusat, dan bisa digeser horizontal */
+.mermaid {
+	display: flex;
+	justify-content: center;
+	margin: 1.5rem 0;
+	padding: 1.25rem;
+	border: 1px solid var(--sl-color-gray-5);
+	border-radius: 0.75rem;
+	background: var(--sl-color-gray-6);
+	overflow-x: auto;
+}
+
+.mermaid svg {
+	max-width: 100%;
+	height: auto;
+}
+
+/* Blok kode: sedikit lebih lega */
+.sl-markdown-content pre:not(.expressive-code pre) {
+	border-radius: 0.5rem;
+}
+
+/* Tabel: garis tepi lebih jelas saat banyak kolom (mis. referensi .env) */
+.sl-markdown-content table {
+	display: block;
+	overflow-x: auto;
+}
