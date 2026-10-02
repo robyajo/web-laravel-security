@@ -24,10 +24,25 @@ import {
   Tabs,
   TabItem,
 } from "@astrojs/starlight/components";
+import pkg from "../../data/package.json";
 
 Paket **`robyajo/laravel-security-monitor`** (Bulwark) adalah Web Application Firewall
 (WAF) mandiri untuk Laravel yang mengikuti standar paket Spatie: **100% murni PHP**,
 tanpa dependensi NPM/Node, dan tanpa memaksakan satu jenis frontend.
+
+<p>
+  <strong>Versi terbaru:</strong> v{pkg.packagist.version}
+  {" · "}
+  <a href={pkg.packagist.url} target="_blank" rel="noopener">
+    Packagist
+  </a>
+  {" · "}
+  <a href="changelog/">Changelog</a>
+  {" · "}
+  <a href={pkg.repository} target="_blank" rel="noopener">
+    GitHub
+  </a>
+</p>
 
 ## Fitur Utama
 
@@ -136,6 +151,15 @@ flowchart TD
     href="webserver-hardening/nginx-hardened-waf/"
   >
     Konfigurasi Nginx, Apache, dan checklist produksi.
+  </LinkCard>
+  <LinkCard title="Changelog" href="changelog/">
+    Riwayat lengkap perubahan dan rilis paket.
+  </LinkCard>
+  <LinkCard
+    title={`Packagist v${pkg.packagist.version}`}
+    href={pkg.packagist.url}
+  >
+    Halaman paket resmi di Packagist.
   </LinkCard>
 </CardGrid>
 

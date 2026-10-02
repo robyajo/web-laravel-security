@@ -19,12 +19,13 @@ npm run dev        # http://localhost:4321
 
 ## Perintah
 
-| Perintah                     | Fungsi                                               |
-| :--------------------------- | :--------------------------------------------------- |
-| `npm run dev`                | Server pengembangan (hot reload)                     |
-| `npm run build`              | Build statis ke `dist/`                              |
-| `npm run preview`            | Pratinjau hasil build secara lokal                   |
-| `node scripts/sync-docs.mjs` | Sinkronkan `../documents/*.md` → `src/content/docs/` |
+| Perintah               | Fungsi                                                    |
+| :--------------------- | :-------------------------------------------------------- |
+| `npm run dev`          | Server pengembangan (hot reload)                          |
+| `npm run build`        | Build statis ke `dist/` (otomatis menjalankan `prebuild`) |
+| `npm run preview`      | Pratinjau hasil build secara lokal                        |
+| `npm run sync:docs`    | Sinkronkan `../documents/*.md` → `src/content/docs/`      |
+| `npm run sync:package` | Sinkronkan versi paket + CHANGELOG + versi Packagist      |
 
 ---
 
@@ -45,8 +46,31 @@ node scripts/sync-docs.mjs
 npm run build
 ```
 
-> Halaman `src/content/docs/index.mdx` (landing) dan `404.md` ditulis manual dan
+> Halaman `src/content/docs/index.mdx` (landing) dan `404.mdx` ditulis manual dan
 > **tidak disentuh** oleh skrip sinkronisasi.
+
+---
+
+## Sinkronisasi Versi & Changelog
+
+`scripts/sync-package.mjs` menyelaraskan metadata paket ke situs:
+
+- **Versi paket** — dari tag git repo paket (`../`), fallback ke versi Packagist.
+- **CHANGELOG** — `../CHANGELOG.md` (fallback: `raw.githubusercontent.com`)
+  digenerate menjadi `src/content/docs/changelog.md`.
+- **Versi Packagist** — diambil dari API Packagist, disimpan di
+  `src/data/package.json`.
+
+Versi terbaru ditampilkan sebagai **badge di header** (menuju Packagist), di
+**halaman landing**, dan di **halaman Changelog**.
+
+```bash
+npm run sync:package   # sinkronkan manual
+```
+
+Skrip ini juga otomatis berjalan sebelum `npm run build` (lewat `prebuild`).
+Tanpa jaringan, skrip hanya memberi peringatan dan mempertahankan berkas hasil
+generate sebelumnya — build tidak digagalkan.
 
 ---
 
@@ -57,13 +81,16 @@ web/
 ├── astro.config.mjs            # konfigurasi Starlight (sidebar, locale id, logo, sitemap)
 ├── nginx.conf                  # contoh konfigurasi deploy ke VPS (akar domain)
 ├── scripts/
-│   └── sync-docs.mjs           # generator konten dari ../documents
+│   ├── sync-docs.mjs           # generator konten dari ../documents
+│   └── sync-package.mjs        # sinkron versi + CHANGELOG + versi Packagist
 ├── public/
 │   └── favicon.svg
 └── src/
     ├── assets/logo.svg
+    ├── data/package.json       # metadata paket hasil generate
     ├── components/
-    │   └── Head.astro          # override <head>: menyuntikkan skrip Mermaid
+    │   ├── Head.astro          # override <head>: menyuntikkan skrip Mermaid
+    │   └── SiteTitle.astro     # override judul: badge versi paket
     ├── scripts/
     │   └── mermaid.ts          # render diagram Mermaid (impor dinamis)
     ├── styles/custom.css       # branding & gaya diagram
@@ -71,7 +98,8 @@ web/
     ├── content/i18n/id.json    # override string UI Indonesia
     └── content/docs/
         ├── index.mdx           # landing (splash)
-        ├── 404.md              # halaman 404 kustom
+        ├── 404.mdx             # halaman 404 kustom
+        ├── changelog.md        # hasil generate dari ../CHANGELOG.md
         ├── getting-started/    # 3 bab
         ├── core-architecture/  # 4 bab
         ├── security-modules/   # 6 bab
@@ -92,6 +120,8 @@ web/
   sitemap.
 - **UI berbahasa Indonesia** (`defaultLocale: 'id'`).
 - **Navigasi cepat** dengan `prefetch`.
+- **Badge versi paket** di header (menuju Packagist) dan **halaman Changelog**
+  yang disinkronkan otomatis dari paket.
 
 ---
 

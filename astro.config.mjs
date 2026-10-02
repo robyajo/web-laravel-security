@@ -39,6 +39,11 @@ export default defineConfig({
           label: "GitHub",
           href: "https://github.com/robyajo/laravel-security-monitor",
         },
+        {
+          icon: "link",
+          label: "Packagist",
+          href: "https://packagist.org/packages/robyajo/laravel-security-monitor",
+        },
       ],
       lastUpdated: true,
       pagination: true,
@@ -47,6 +52,8 @@ export default defineConfig({
       components: {
         // Menyuntikkan skrip render Mermaid ke setiap halaman.
         Head: "./src/components/Head.astro",
+        // Menambahkan badge versi paket di sebelah judul situs.
+        SiteTitle: "./src/components/SiteTitle.astro",
       },
       expressiveCode: {
         // Shiki tidak mengenal bahasa "cron"; tampilkan sebagai bash agar tetap rapi.
@@ -80,6 +87,12 @@ export default defineConfig({
         {
           label: "Panduan Integrasi",
           items: [{ autogenerate: { directory: "integration-guides" } }],
+        },
+        { label: "Changelog", slug: "changelog" },
+        {
+          label: "Packagist",
+          link: "https://packagist.org/packages/robyajo/laravel-security-monitor",
+          attrs: { target: "_blank", rel: "noopener" },
         },
       ],
     }),

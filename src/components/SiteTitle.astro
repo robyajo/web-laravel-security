@@ -1,0 +1,51 @@
+---
+// Override SiteTitle: tambahkan badge versi paket di samping judul situs.
+// `.title-wrapper` pada header adalah flex, sehingga badge ini tampil rapi
+// di sebelah judul tanpa mengubah tata letak bawaan.
+import Default from '@astrojs/starlight/components/SiteTitle.astro';
+import pkg from '../data/package.json';
+
+const version = pkg.packagist?.version ?? pkg.version;
+---
+
+<Default />
+
+<a
+	class="pkg-version"
+	href={pkg.packagist.url}
+	target="_blank"
+	rel="noopener"
+	title={`Versi terbaru paket di Packagist: v${version}`}
+>
+	v{version}
+</a>
+
+<style>
+	.pkg-version {
+		align-self: center;
+		flex: none;
+		display: inline-flex;
+		align-items: center;
+		padding: 0.1rem 0.55rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 999px;
+		font-size: var(--sl-text-xs);
+		font-weight: 600;
+		line-height: 1.4;
+		color: var(--sl-color-text-accent);
+		text-decoration: none;
+		white-space: nowrap;
+		transition: border-color 0.15s ease, background-color 0.15s ease;
+	}
+
+	.pkg-version:hover {
+		border-color: var(--sl-color-accent);
+		background-color: var(--sl-color-accent-low);
+	}
+
+	@media (max-width: 50rem) {
+		.pkg-version {
+			display: none;
+		}
+	}
+</style>
