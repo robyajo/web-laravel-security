@@ -55,6 +55,7 @@ npm run build
 ```
 web/
 ├── astro.config.mjs            # konfigurasi Starlight (sidebar, locale id, logo, sitemap)
+├── nginx.conf                  # contoh konfigurasi deploy ke VPS (akar domain)
 ├── scripts/
 │   └── sync-docs.mjs           # generator konten dari ../documents
 ├── public/
@@ -96,8 +97,31 @@ web/
 
 ## Deploy
 
-Hasil `npm run build` adalah situs statis di `dist/`. Unggah ke GitHub Pages,
-Netlify, Vercel, Cloudflare Pages, atau hosting statis mana pun.
+Hasil `npm run build` adalah situs statis di `dist/`. Proyek ini adalah repo
+terpisah dan disajikan di **akar domainnya sendiri** (tanpa `base`), mis.
+`https://docs.example.com/`.
 
-Sesuaikan `site` pada `astro.config.mjs` dengan URL publik Anda — nilai ini
-dipakai untuk tag canonical dan `sitemap-index.xml`.
+Sesuaikan `site` pada `astro.config.mjs` dengan domain Anda (dipakai untuk tag
+canonical dan `sitemap-index.xml`), lalu build ulang.
+
+### Ke VPS (Nginx)
+
+Contoh konfigurasi siap pakai ada di [`nginx.conf`](./nginx.conf). Ringkasnya:
+
+```bash
+# 1) Lokal
+npm ci && npm run build
+
+# 2) Unggah
+rsync -a --delete dist/ user@<vps>:/var/www/laravel-security-monitor-docs/
+
+# 3) VPS
+sudo cp nginx.conf /etc/nginx/sites-available/laravel-security-monitor-docs
+sudo ln -s /etc/nginx/sites-available/laravel-security-monitor-docs /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
+sudo certbot --nginx -d docs.example.com   # TLS Let's Encrypt
+```
+
+Situs juga bisa diunggah ke GitHub Pages, Netlify, Vercel, atau Cloudflare
+Pages. Untuk hosting pada sub-path (mis. `https://example.com/docs/`), set
+`base: '/docs'` di `astro.config.mjs` dan sesuaikan `nginx.conf`.

@@ -6,14 +6,12 @@ import sitemap from "@astrojs/sitemap";
 // https://astro.build/config
 export default defineConfig({
   // === Konfigurasi deploy ===
-  // Default ini untuk GitHub Pages *project site*:
-  //   https://robyajo.github.io/laravel-security-monitor/
-  // Jika target Anda berbeda:
-  //   - GitHub Pages: sesuaikan 'base' dengan nama repo Anda.
-  //   - Domain sendiri / Netlify / Vercel (root): hapus 'base' dan set 'site'
-  //     ke domain Anda, mis. 'https://docs.contoh.com'.
-  site: "https://robyajo.github.io",
-  base: "/laravel-security-monitor",
+  // Situs dokumentasi ini adalah repo/proyek terpisah dan disajikan di AKAR
+  // domainnya sendiri (tanpa `base`), mis. https://docs.example.com/
+  //   - Ganti 'site' dengan domain Anda (dipakai canonical + sitemap).
+  //   - Untuk deploy pada sub-path (mis. https://example.com/docs/),
+  //     tambahkan baris:  base: '/docs'
+  site: "https://docs.example.com",
 
   // Muat awal halaman tujuan saat tautan mulai terlihat (navigasi terasa instan).
   prefetch: true,
