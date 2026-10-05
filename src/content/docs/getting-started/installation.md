@@ -17,7 +17,7 @@ Pastikan lingkungan server Anda memenuhi spesifikasi minimum berikut:
 
 - **PHP**: `^8.2`, `^8.3`, `^8.4`, atau `^8.5`
 - **Laravel**: `^10.0`, `^11.0`, `^12.0`, atau `^13.0`
-- **Ekstensi PHP**: `pdo`, `mbstring`, `json`, `filter`, `openssl` (tanpa memerlukan ekstensi `gd` atau `imagick` berkat implementasi pure SVG CAPTCHA).
+- **Ekstensi PHP**: `pdo`, `mbstring`, `json`, `filter`, `openssl`.
 
 ---
 
@@ -69,18 +69,30 @@ Perintah ini akan secara otomatis:
 2. Mempublikasikan berkas migrasi database ke `database/migrations/`.
 3. Mempublikasikan template virtual host `nginx.conf` di root proyek.
 4. **Memperbarui berkas `public/.htaccess`**:
-   - Jika berkas belum ada: membuat `public/.htaccess` baru dengan aturan rewrite standar Laravel + blok hardening keamanan.
-   - Jika berkas sudah ada: membuat cadangan otomatis `public/.htaccess.backup-YYYYMMDD_HHMMSS` dan menyisipkan blok hardening keamanan di bagian bawah berkas tanpa merusak aturan rewrite kustom Anda.
-   - Jika sudah memiliki aturan hardening: mendeteksi dan mempertahankan berkas yang sudah terlindungi.
+    - Jika berkas belum ada: membuat `public/.htaccess` baru dengan aturan rewrite standar Laravel + blok hardening keamanan.
+    - Jika berkas sudah ada: membuat cadangan otomatis `public/.htaccess.backup-YYYYMMDD_HHMMSS` dan menyisipkan blok hardening keamanan di bagian bawah berkas tanpa merusak aturan rewrite kustom Anda.
+    - Jika sudah memiliki aturan hardening: mendeteksi dan mempertahankan berkas yang sudah terlindungi.
 5. **Menyematkan Variabel Lingkungan ke `.env` & `.env.example`**:
-   - Menambahkan blok konfigurasi lengkap (`SECURITY_*` dan `CAPTCHA_*`) disertai dokumentasi penjelasan fungsi berbahasa Indonesia langsung di bagian bawah berkas `.env` dan `.env.example`.
-   - Menggunakan deteksi cerdas agar tidak terjadi duplikasi jika variabel sudah pernah ditambahkan sebelumnya.
+    - Menambahkan blok konfigurasi lengkap (`SECURITY_*`) disertai dokumentasi penjelasan fungsi berbahasa Indonesia langsung di bagian bawah berkas `.env` dan `.env.example`.
+    - Menggunakan deteksi cerdas agar tidak terjadi duplikasi jika variabel sudah pernah ditambahkan sebelumnya.
+6. **Menyematkan Trait `HasSecurityRelations` ke Model User**:
+    - Secara otomatis mendeteksi model `User` (`app/Models/User.php`) dan menambahkan import `use Internal\SecurityMonitor\Concerns\HasSecurityRelations;` serta menyematkan trait `HasSecurityRelations`.
+    - Idempotent: tidak akan menduplikasi jika trait sudah ada.
+7. **Mendaftarkan Middleware WAF ke Aplikasi Host**:
+    - Otomatis mendaftarkan `BlockIpAddress` dan `DetectSecurityThreats` ke dalam `bootstrap/app.php` (Laravel 11 & 12) atau `app/Http/Kernel.php` (Laravel 10).
+    - Idempotent: memeriksa keberadaan middleware terlebih dahulu sebelum mendaftarkan.
 
 ### Opsi Perintah:
 
 | Opsi                 | Fungsi                                                                                                                    |
 | :------------------- | :------------------------------------------------------------------------------------------------------------------------ |
 | `--force`            | Menimpa seluruh berkas konfigurasi, migrasi, `nginx.conf`, dan `public/.htaccess` dengan template bawaan paket.           |
+| `--with-blade`       | Mempublikasikan tampilan dashboard monitoring Blade (Livewire Starter Kit — Pure Vanilla CSS).                            |
+| `--with-tsx`         | Mempublikasikan tampilan dashboard monitoring TSX (Inertia + React Starter Kit — Pure Vanilla CSS).                       |
+| `--with-both`        | Mempublikasikan kedua tampilan dashboard monitoring sekaligus (Blade & TSX).                                              |
+| `--stack=...`        | Menentukan stack dashboard yang ingin dipublikasikan (`blade`, `tsx`, `both`, `none`).                                    |
+| `--without-user-trait` | Melewatkan penyematan otomatis trait `HasSecurityRelations` ke model User.                                               |
+| `--without-middleware` | Melewatkan pendaftaran otomatis middleware WAF di `bootstrap/app.php` / `Kernel.php`.                                    |
 | `--without-nginx`    | Melewatkan publikasi berkas `nginx.conf` jika server Anda tidak menggunakan web server Nginx.                             |
 | `--without-htaccess` | Melewatkan pembaruan berkas `public/.htaccess` jika Anda menggunakan Nginx murni dan tidak memerlukan Apache `.htaccess`. |
 | `--with-htaccess`    | Memaksa pembaruan berkas `public/.htaccess` dengan aturan hardening keamanan paket.                                       |
@@ -133,14 +145,17 @@ php artisan vendor:publish --tag=security-all --force
 ### 6. Publikasikan Dashboard Monitoring Starter Kit
 
 ```bash
-# Livewire Starter Kit (Flux UI)
-php artisan vendor:publish --tag=starterkit-livewire
+# Blade Starter Kit (Livewire + Flux UI)
+php artisan vendor:publish --tag=starterkit-blade
 
-# React Starter Kit (Inertia + React + shadcn/ui)
-php artisan vendor:publish --tag=starterkit-react
+# React / TSX Starter Kit (Inertia + React + shadcn/ui)
+php artisan vendor:publish --tag=starterkit-tsx
+
+# Keduanya (Blade & TSX)
+php artisan vendor:publish --tag=starterkit-all
 ```
 
-Perintah Livewire menyalin enam halaman Livewire (single-file component) ke `resources/views/pages/security/`. Perintah React menyalin enam halaman Inertia/React ke `resources/js/pages/security/` beserta komponen pendukung di `resources/js/components/security/`. Keduanya juga menyertakan blok konfigurasi `dashboard` pada `config/security.php`. Dashboard bersifat opsional dan **wajib login** (lihat bagian [Dashboard Monitoring Starter Kit](#8-dashboard-monitoring-starter-kit-opsional)).
+Perintah Blade menyalin enam halaman Livewire (single-file component) ke `resources/views/pages/security/`. Perintah TSX menyalin enam halaman Inertia/React ke `resources/js/pages/security/` beserta komponen pendukung di `resources/js/components/security/`. Keduanya juga menyertakan konfigurasi `dashboard` pada `config/security.php`. Dashboard diakses di prefix `/security` dan **wajib login** (lihat bagian [Dashboard Monitoring Starter Kit](#8-dashboard-monitoring-starter-kit-opsional)).
 
 ---
 
@@ -287,12 +302,12 @@ Panel tersedia di `/security` dan berisi enam modul: **Overview**, **Security Lo
 - Rute hanya didaftarkan ketika `security.dashboard.enabled=true` **dan** stack frontend yang sesuai (`driver`) terpasang (Livewire atau Inertia).
 - Seluruh rute memakai middleware `web` + `auth` (wajib login) dan, secara bawaan, `security.admin` (Gate `manage-security-monitor`).
 - Kustomisasi melalui `config/security.php`:
-  ```php
-  'dashboard' => [
-      'enabled' => (bool) env('SECURITY_DASHBOARD_ENABLED', false),
-      'driver' => env('SECURITY_DASHBOARD_DRIVER', 'livewire'),
-      'prefix' => env('SECURITY_DASHBOARD_PREFIX', 'security'),
-      'middleware' => ['web', 'auth'],
-      'admin_middleware' => ['Internal\\SecurityMonitor\\Http\\Middleware\\EnsureSecurityAdmin'],
-  ],
-  ```
+    ```php
+    'dashboard' => [
+        'enabled' => (bool) env('SECURITY_DASHBOARD_ENABLED', false),
+        'driver' => env('SECURITY_DASHBOARD_DRIVER', 'livewire'),
+        'prefix' => env('SECURITY_DASHBOARD_PREFIX', 'security'),
+        'middleware' => ['web', 'auth'],
+        'admin_middleware' => ['Internal\\SecurityMonitor\\Http\\Middleware\\EnsureSecurityAdmin'],
+    ],
+    ```

@@ -1,11 +1,92 @@
 ---
 title: "Changelog"
-description: "Riwayat lengkap perubahan paket robyajo/laravel-security-monitor. Versi terbaru: v1.1.1."
+description: "Riwayat lengkap perubahan paket robyajo/laravel-security-monitor. Versi terbaru: v2.0.4."
 ---
 
-Versi terbaru: **v1.1.1** · [Packagist](https://packagist.org/packages/robyajo/laravel-security-monitor) · [Repositori GitHub](https://github.com/robyajo/laravel-security-monitor)
+Versi terbaru: **v2.0.4** · [Packagist](https://packagist.org/packages/robyajo/laravel-security-monitor) · [Repositori GitHub](https://github.com/robyajo/laravel-security-monitor)
 
 All notable changes to `robyajo/laravel-security-monitor` will be documented in this file.
+
+## [2.0.4] - 2026-10-05
+
+### Added
+
+- **Pure Vanilla CSS Architecture for Dashboard Views**:
+  - Migrated both Blade (Livewire) and React (TSX) dashboard stubs to pure Vanilla CSS.
+  - Eliminated external UI library dependencies (removed Livewire Flux UI, Shadcn UI, `@/lib/utils`, and `sonner`).
+  - Added standalone `security.css` stylesheet and zero-dependency `ui.tsx` helper components (`Card`, `Button`, `Badge`, `Input`, `Label`).
+  - Unified themeable CSS Custom Properties (`--sec-*`) with built-in automatic dark mode (`prefers-color-scheme: dark` and `.dark` / `[data-theme="dark"]`).
+  - 100% responsive layout across mobile, tablet, and desktop viewports with accessible modal dialogs and pure CSS trend chart bars.
+
+## [2.0.3] - 2026-10-05
+
+### Added
+
+- **Automated Host Setup in `security:install`**:
+  - Automatically detects and injects the `HasSecurityRelations` trait and import into `app/Models/User.php`.
+  - Automatically registers WAF middlewares (`BlockIpAddress` and `DetectSecurityThreats`) in `bootstrap/app.php` (Laravel 11 & 12) or `app/Http/Kernel.php` (Laravel 10).
+  - Both injections are idempotent and preserve existing code formatting and PHPDoc tags.
+  - Added `--without-user-trait` and `--without-middleware` flags to bypass automatic registration if needed.
+
+## [2.0.2] - 2026-10-04
+
+### Added
+
+- **Blade & TSX Starter Kit Tags**:
+  - Added `--with-blade`, `--with-tsx`, and `--with-all` flags to `php artisan security:install` alongside interactive stack selection.
+  - Added `starterkit-blade`, `starterkit-tsx`, `starterkit-all`, `security-dashboard-blade`, `security-dashboard-tsx`, and `security-dashboard-all` publication tags.
+  - Enforced authentication and login requirement across all `/security` monitoring routes.
+
+## [2.0.1] - 2026-10-03
+
+### Changed
+
+- Refinements to post-2.0.0 headless architecture and route bindings.
+
+## [2.0.0] - 2026-10-03
+
+### Changed
+
+- **BREAKING — version corrected to a major.** Removing the CAPTCHA subsystem
+  deletes public API (`CaptchaService`, `ValidCaptcha`, `CaptchaApiController`),
+  routes, config keys, and `CAPTCHA_*` environment variables, so it is a
+  breaking change. The same removal was briefly tagged `1.1.4`; `2.0.0` is the
+  canonical release. See the `1.1.4` entry below for the full list of removals.
+
+## [1.1.4] - 2026-10-03
+
+### Removed
+
+- **CAPTCHA subsystem removed.** The zero-dependency SVG CAPTCHA has been
+  dropped to keep the package focused on WAF/threat protection. Deleted:
+  `CaptchaService`, `ValidCaptcha` rule, `CaptchaApiController`, the
+  `/api/security/captcha` endpoints, the `security.captcha` config block, and
+  the `CAPTCHA_*` environment variables. Login brute-force protection is still
+  provided by the multi-tier stepped login lockout.
+## [1.1.3] - 2026-10-03
+
+### Added
+
+- **Log4Shell / JNDI detection** (`log4shell_jndi`): new zero-tolerance
+  instant-block signature that detects `${jndi:...}` payloads in any request
+  part (User-Agent, query string, body, headers), including the common
+  obfuscations `${${lower:j}ndi:...}` and `${j${lower:n}di:...}` as well as
+  URL-encoded forms such as `%24%7Bjndi%3A...`. Previously these payloads were
+  neither detected nor logged, so a Log4Shell probe passed straight through.
+
+### Changed
+
+- README: the install command now uses the explicit stable constraint
+  (`composer require robyajo/laravel-security-monitor:^1.1`) and warns against
+  `@dev`, which forces the unreleased `dev-main` branch instead of a tagged
+  release.
+
+## [1.1.2] - 2026-10-02
+
+### Changed
+
+- README: installation guidance refresh (explicit stable constraint and the
+  `@dev` warning).
 
 ## [1.1.1] - 2026-10-02
 

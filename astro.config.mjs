@@ -30,7 +30,7 @@ export default defineConfig({
         root: { label: "Bahasa Indonesia", lang: "id" },
       },
       description:
-        "Dokumentasi resmi robyajo/laravel-security-monitor (Bulwark) — WAF mandiri, karantina perangkat, proteksi login bertingkat, CAPTCHA SVG, pemindai webshell, dan REST API headless untuk Laravel 10–13.",
+        "Dokumentasi resmi robyajo/laravel-security-monitor (Bulwark) — WAF mandiri, karantina perangkat, proteksi login bertingkat, dashboard monitoring Pure Vanilla CSS, pemindai webshell, dan REST API headless untuk Laravel 10–13.",
       logo: { src: "./src/assets/logo.svg", alt: "Laravel Security Monitor" },
       favicon: "/favicon.svg",
       social: [
