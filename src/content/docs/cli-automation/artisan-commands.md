@@ -164,3 +164,39 @@ php artisan security:purge-injected-data [options]
 - `--force`: Menghapus baris data tercemar yang ditemukan.
 - `--marker=*`: Marker teks spesifik yang dicari (dapat diulang, default: canary pentest umum).
 - `--model=*`: Membatasi pencarian pada model Eloquent tertentu.
+
+---
+
+## 7. `security:upgrade`
+
+Memeriksa versi rilis terbaru di Packagist/GitHub, memperbarui package via Composer, menerapkan migrasi database, menyinkronkan rute dan tampilan dashboard monitoring, serta menyegarkan cache.
+
+```bash
+php artisan security:upgrade [options]
+```
+
+### Notifikasi Otomatis:
+Ketika pengembang menjalankan `php artisan serve` atau `composer run dev`, sistem secara otomatis memeriksa versi terbaru dari Packagist/GitHub di latar belakang (timeout 2s, di-cache 1 jam). Jika versi baru telah dirilis, notifikasi visual akan ditampilkan di terminal konsol menyarankan perintah ini.
+
+### Opsi:
+
+- `--check`: Hanya memeriksa status versi terbaru tanpa menjalankan proses pembaruan.
+- `--force`: Memaksa eksekusi pembaruan dan sinkronisasi aset lokal meskipun versi sudah yang terbaru.
+- `--no-composer`: Melewatkan eksekusi `composer update` (hanya sinkronisasi aset lokal seperti migrasi, rute, dan view).
+- `--no-migrate`: Melewatkan penerapan migrasi database.
+- `--sync-routes`: Memaksa pembaruan berkas rute `routes/security.php` dan `routes/security-api.php`.
+- `--sync-views`: Memaksa pembaruan berkas tampilan dashboard monitoring (Blade / React).
+
+### Contoh:
+
+```bash
+# Periksa ketersediaan versi rilis baru
+php artisan security:upgrade --check
+
+# Jalankan upgrade dan sinkronisasi penuh
+php artisan security:upgrade
+
+# Sinkronkan aset lokal tanpa composer update
+php artisan security:upgrade --no-composer --force
+```
+

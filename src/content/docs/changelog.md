@@ -1,11 +1,49 @@
 ---
 title: "Changelog"
-description: "Riwayat lengkap perubahan paket robyajo/laravel-security-monitor. Versi terbaru: v2.0.5."
+description: "Riwayat lengkap perubahan paket robyajo/laravel-security-monitor. Versi terbaru: v2.0.9."
 ---
 
-Versi terbaru: **v2.0.5** · [Packagist](https://packagist.org/packages/robyajo/laravel-security-monitor) · [Repositori GitHub](https://github.com/robyajo/laravel-security-monitor)
+Versi terbaru: **v2.0.9** · [Packagist](https://packagist.org/packages/robyajo/laravel-security-monitor) · [Repositori GitHub](https://github.com/robyajo/laravel-security-monitor)
 
 All notable changes to `robyajo/laravel-security-monitor` will be documented in this file.
+
+## [2.0.9] - 2026-10-05
+
+### Fixed
+
+- **Kompatibilitas CI & Test Matrix L10 - L13**:
+  - Menambahkan dependensi `guzzlehttp/guzzle: ^7.8|^8.0` pada `composer.json` untuk ketersediaan PSR-7 Response pada `Http::fake()` dan fitur `VersionCheckService` di Laravel 10.
+  - Memperbaiki analisis statis PHPStan pada evaluasi tipe `LoginThrottleService` dan `SecurityInstallCommand`.
+  - Mengoptimalkan assertion command options pada `SecurityInstallAutoInjectTest`.
+
+## [2.0.8] - 2026-10-05
+
+### Added
+
+- **Pemeriksaan Versi Otomatis & Notifikasi Upgrade di Terminal (`php artisan serve` & `composer run dev`)**:
+  - Memeriksa versi terbaru di Packagist/GitHub saat menjalankan `php artisan serve` atau `composer run dev` (`artisan dev`).
+  - Menampilkan notifikasi visual di terminal konsol jika versi baru telah dirilis.
+  - Ringan, non-blocking (timeout 2s), dan di-cache 1 jam (`SECURITY_VERSION_CHECK_CACHE_TTL=3600`).
+  - Perintah baru `php artisan security:upgrade` untuk pembaruan dan sinkronisasi otomatis seluruh komponen paket (Composer, migrasi, rute, view, dan cache).
+  - Integrasi informasi versi pada dashboard Pengaturan (`/security/settings`) dan REST API.
+
+## [2.0.7] - 2026-10-05
+
+### Added
+
+- **Halaman Pengaturan Keamanan Interaktif & Pengaturan Dinamis**:
+  - Halaman dashboard `/security/settings` untuk Blade/Livewire dan React/Inertia.
+  - Pilihan lingkup pemblokiran otomatis: Per Perangkat (`device`) vs Seluruh IP Router (`ip`).
+  - Multi-layer persistence: database `security_settings`, Cache real-time, dan sinkronisasi `.env`.
+  - Endpoint REST API `/api/security/settings`.
+
+## [2.0.6] - 2026-10-05
+
+### Added
+
+- **Device-Scoped Automatic & Instant Blocking**:
+  - Isolasi tingkat perangkat untuk auto-block dan zero-tolerance instant block sehingga aman untuk pengguna dalam satu WiFi / NAT router.
+  - Device fingerprinting otomatis dan attachment cookie `app_device_id`.
 
 ## [2.0.5] - 2026-10-05
 
