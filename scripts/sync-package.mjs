@@ -126,6 +126,12 @@ async function main() {
 
 	const previous = readJson(dataFile) ?? {};
 	const finalVersion = version ?? packagist?.version ?? previous.version ?? '0.0.0';
+	const finalPackagistVersion = packagist?.version ?? previous.packagist?.version ?? finalVersion;
+	const finalReleased = packagist?.released ?? previous.packagist?.released ?? null;
+
+	// Pertahankan updatedAt bila versi tidak berubah agar git status tidak terus-menerus kotor
+	const isSameVersion = previous.version === finalVersion && previous.packagist?.version === finalPackagistVersion;
+	const updatedAt = isSameVersion && previous.updatedAt ? previous.updatedAt : new Date().toISOString().slice(0, 10);
 
 	const payload = {
 		name: PACKAGE,
@@ -133,15 +139,18 @@ async function main() {
 		repository: REPOSITORY,
 		packagist: {
 			url: PACKAGIST,
-			version: packagist?.version ?? previous.packagist?.version ?? finalVersion,
-			released: packagist?.released ?? previous.packagist?.released ?? null,
+			version: finalPackagistVersion,
+			released: finalReleased,
 		},
-		updatedAt: new Date().toISOString().slice(0, 10),
+		updatedAt,
 	};
 
 	mkdirSync(dataDir, { recursive: true });
-	writeFileSync(dataFile, `${JSON.stringify(payload, null, 2)}\n`, 'utf8');
-	console.log('✓ src/data/package.json');
+	const newJson = `${JSON.stringify(payload, null, 2)}\n`;
+	if (!existsSync(dataFile) || readFileSync(dataFile, 'utf8') !== newJson) {
+		writeFileSync(dataFile, newJson, 'utf8');
+		console.log('✓ src/data/package.json');
+	}
 
 	// --- changelog.md ---
 	if (changelog) {
@@ -160,9 +169,12 @@ async function main() {
 		].join(' · ');
 
 		const body = stripLeadingH1(changelog).trim();
+		const newChangelog = `${frontmatter}\n${note}\n\n${body}\n`;
 
-		writeFileSync(changelogFile, `${frontmatter}\n${note}\n\n${body}\n`, 'utf8');
-		console.log('✓ src/content/docs/changelog.md');
+		if (!existsSync(changelogFile) || readFileSync(changelogFile, 'utf8') !== newChangelog) {
+			writeFileSync(changelogFile, newChangelog, 'utf8');
+			console.log('✓ src/content/docs/changelog.md');
+		}
 	} else {
 		console.warn('! changelog.md tidak diperbarui (sumber tidak tersedia).');
 	}

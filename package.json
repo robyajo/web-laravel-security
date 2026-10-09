@@ -11,8 +11,7 @@
     "sync:docs": "node scripts/sync-docs.mjs",
     "sync:package": "node scripts/sync-package.mjs",
     "generate:og": "node scripts/generate-og.mjs",
-    "deploy": "./finis.sh",
-    "prebuild": "node scripts/sync-package.mjs"
+    "deploy": "./finis.sh"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
