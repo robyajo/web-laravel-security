@@ -26,6 +26,7 @@ npm run dev        # http://localhost:4321
 | `npm run preview`      | Pratinjau hasil build secara lokal                        |
 | `npm run sync:docs`    | Sinkronkan `../documents/*.md` → `src/content/docs/`      |
 | `npm run sync:package` | Sinkronkan versi paket + CHANGELOG + versi Packagist      |
+| `./finis.sh`           | Auto-pull (conflict-free), sync changelog, build & deploy di VPS |
 
 ---
 
