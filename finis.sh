@@ -5,7 +5,7 @@
 # Repository: robyajo/web-laravel-security
 #
 # Masalah yang diselesaikan skrip ini:
-#   Saat 'npm run build' dijalankan di VPS, skrip 'sync-package.mjs' memodifikasi:
+#   Saat 'pnpm run build' dijalankan di VPS, skrip 'sync-package.mjs' memodifikasi:
 #     - src/content/docs/changelog.md
 #     - src/data/package.json
 #   Akibatnya, saat rilis baru di-push dan 'git pull' dijalankan di VPS, Git error:
@@ -14,9 +14,9 @@
 # Skrip ini secara otomatis:
 #   1. Membersihkan perubahan lokal pada berkas hasil auto-generate (conflict-free).
 #   2. Menarik (git pull) pembaruan kode terbaru dari origin/main.
-#   3. Memasang dependensi (npm ci / install) bila diperlukan.
+#   3. Memasang dependensi (pnpm install) bila diperlukan.
 #   4. Menyinkronkan ulang CHANGELOG.md & versi Packagist terbaru secara bersih.
-#   5. Melakukan kompilasi 'npm run build' (Astro statis + indeks Pagefind).
+#   5. Melakukan kompilasi 'pnpm run build' (Astro statis + indeks Pagefind).
 #   6. (Opsional) Menyalin hasil build dist/ ke direktori Nginx & reload web server.
 # ==============================================================================
 
@@ -173,18 +173,25 @@ else
 fi
 
 # ==============================================================================
-# LANGKAH 2: PERIKSA & INSTAL DEPENDENSI (NPM)
+# LANGKAH 2: PERIKSA & INSTAL DEPENDENSI (PNPM)
 # ==============================================================================
-echo -e "${BOLD}${CYAN}[2/5] Memeriksa Dependensi Node.js...${NC}"
+echo -e "${BOLD}${CYAN}[2/5] Memeriksa Dependensi Node.js (pnpm)...${NC}"
+
+# Pastikan pnpm tersedia sebelum melanjutkan.
+if ! command -v pnpm >/dev/null 2>&1; then
+    print_error "pnpm tidak ditemukan. Aktifkan dengan 'corepack enable' atau 'npm install -g pnpm'."
+    exit 1
+fi
+
 if [ ! -d "node_modules" ]; then
-    print_info "Folder node_modules tidak ditemukan. Menjalankan 'npm ci'..."
-    npm ci || npm install
+    print_info "Folder node_modules tidak ditemukan. Menjalankan 'pnpm install --frozen-lockfile'..."
+    pnpm install --frozen-lockfile || pnpm install
     print_success "Dependensi berhasil dipasang."
 else
-    # Cek apakah package-lock.json lebih baru dari node_modules
-    if [ "package-lock.json" -nt "node_modules" ]; then
-        print_info "Ada perubahan pada package-lock.json. Menjalankan 'npm ci'..."
-        npm ci || npm install
+    # Cek apakah pnpm-lock.yaml lebih baru dari node_modules
+    if [ "pnpm-lock.yaml" -nt "node_modules" ]; then
+        print_info "Ada perubahan pada pnpm-lock.yaml. Menjalankan 'pnpm install --frozen-lockfile'..."
+        pnpm install --frozen-lockfile || pnpm install
         print_success "Dependensi berhasil diperbarui."
     else
         print_success "Dependensi node_modules sudah mutakhir."
@@ -207,8 +214,8 @@ echo ""
 # ==============================================================================
 # LANGKAH 4: BUILD ASET STATIS ASTRO
 # ==============================================================================
-echo -e "${BOLD}${CYAN}[4/5] Mengompilasi Situs Dokumentasi Astro (npm run build)...${NC}"
-npm run build
+echo -e "${BOLD}${CYAN}[4/5] Mengompilasi Situs Dokumentasi Astro (pnpm run build)...${NC}"
+pnpm run build
 print_success "Kompilasi selesai! Hasil build tersedia di folder 'dist/'."
 echo ""
 

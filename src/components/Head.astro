@@ -2,8 +2,9 @@
 import pkg from '../data/package.json';
 
 // Override komponen Head Starlight: pertahankan seluruh tag <head> bawaan,
-// lalu suntikkan metadata SEO lengkap (Open Graph, Twitter Cards, Schema.org JSON-LD,
-// breadcrumbs, dan robots crawl directives), serta skrip Mermaid.
+// lalu suntikkan font Plus Jakarta Sans, favicons, metadata SEO lengkap
+// (Open Graph, Twitter Cards, Schema.org JSON-LD, breadcrumbs, dan robots crawl directives),
+// serta skrip Mermaid.
 const { head, entry } = Astro.locals.starlightRoute;
 const title = entry.data.title;
 const description = entry.data.description || 'Dokumentasi resmi robyajo/laravel-security-monitor (Bulwark) — Enterprise Headless Web Application Firewall untuk Laravel.';
@@ -187,6 +188,22 @@ const breadcrumbSchema = breadcrumbItems.length > 1 ? {
 ---
 
 {head.map(({ tag: Tag, attrs, content }) => <Tag {...attrs} set:html={content} />)}
+
+<!-- Tipografi Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=JetBrains+Mono:ital,wght@0,400..700;1,400..700&display=swap"
+  rel="stylesheet"
+/>
+
+<!-- Ikon & Web App Manifest Lengkap -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="manifest" href="/site.webmanifest" />
 
 <!-- Open Graph & Social Preview -->
 <meta property="og:image" content={ogImageUrl} />
