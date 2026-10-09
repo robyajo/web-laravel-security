@@ -42,14 +42,94 @@ if (segments.length > 0 && !isHome) {
   });
 }
 
+// Daftar Kata Kunci Lengkap untuk SEO (Termasuk Kota Pekanbaru & Cybersecurity)
+const allKeywords = [
+  // Entitas Kota Pekanbaru & Pemerintah (Kominfo)
+  'pekanbaru',
+  'kota pekanbaru',
+  'pemko pekanbaru',
+  'pemerintah kota pekanbaru',
+  'kominfo pekanbaru',
+  'diskominfo pekanbaru',
+  'dinas komunikasi informatika statistik dan persandian kota pekanbaru',
+  'security-dev.pekanbaru.go.id',
+  'keamanan siber pekanbaru',
+  'keamanan informasi pekanbaru',
+  'csirt pekanbaru',
+  'pekanbaru go id',
+  'aplikasi pekanbaru go id',
+  'portal keamanan pekanbaru',
+
+  // Brand & Identitas Paket
+  'laravel security monitor',
+  'bulwark waf',
+  'bulwark laravel',
+  'robyajo/laravel-security-monitor',
+  'robyajo',
+  'roby karti s',
+
+  // Fitur Keamanan WAF Laravel
+  'laravel web application firewall',
+  'laravel waf',
+  'waf laravel',
+  'laravel firewall',
+  'keamanan laravel',
+  'web security laravel',
+  'laravel threat detection',
+  'deteksi ancaman laravel',
+  'zero tolerance waf',
+  'instant block laravel',
+  'auto block ip laravel',
+  'device quarantine laravel',
+  'karantina perangkat',
+  'stepped login throttling',
+  'login lockout laravel',
+  'brute force protection laravel',
+  'proteksi brute force',
+  'credential stuffing protection',
+  'webshell scanner php',
+  'pemindai webshell laravel',
+  'server security audit laravel',
+  'audit keamanan server',
+  'file integrity baseline sha256',
+  'access log streaming laravel',
+  'reverse proxy ip spoofing laravel',
+  'real client ip resolution',
+  'cloudflare connecting ip laravel',
+  'appeal ticket unblock',
+  'tiket banding ip terblokir',
+  'active session tracking laravel',
+  'session invalidation laravel',
+
+  // Standar & Arsitektur Paket
+  'spatie standard laravel package',
+  'pure php waf',
+  'zero npm laravel security',
+  'headless security api laravel',
+  'laravel rest api security',
+  'laravel 10 security',
+  'laravel 11 security',
+  'laravel 12 security',
+  'laravel 13 security',
+  'php 8.2 security',
+  'php 8.3 security',
+  'php 8.4 security',
+  'mitigasi ddos laravel',
+  'proteksi sql injection laravel',
+  'proteksi xss laravel',
+  'proteksi ssti laravel',
+  'path traversal prevention'
+].join(', ');
+
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: 'Laravel Security Monitor',
-  alternateName: ['Bulwark', 'robyajo/laravel-security-monitor'],
+  alternateName: ['Bulwark', 'robyajo/laravel-security-monitor', 'Security Pekanbaru', 'Laravel Security Pekanbaru', 'Diskominfo Pekanbaru Security'],
   url: siteOrigin + '/',
-  description: 'Dokumentasi resmi robyajo/laravel-security-monitor (Bulwark) — Enterprise Headless Web Application Firewall & Audit Library untuk Laravel.',
+  description: 'Dokumentasi resmi robyajo/laravel-security-monitor (Bulwark) — Enterprise Headless Web Application Firewall & Audit Library untuk Laravel. Layanan Keamanan Sistem Informasi & Siber Kota Pekanbaru (security-dev.pekanbaru.go.id).',
   inLanguage: 'id-ID',
+  keywords: allKeywords,
 };
 
 const softwareSchema = {
@@ -62,6 +142,7 @@ const softwareSchema = {
   license: 'https://opensource.org/licenses/MIT',
   url: 'https://github.com/robyajo/laravel-security-monitor',
   downloadUrl: 'https://packagist.org/packages/robyajo/laravel-security-monitor',
+  keywords: allKeywords,
   author: {
     '@type': 'Person',
     name: 'Roby Karti S.',
@@ -81,6 +162,7 @@ const articleSchema = !isHome ? {
   description: description,
   url: canonicalUrl,
   inLanguage: 'id-ID',
+  keywords: allKeywords,
   author: {
     '@type': 'Person',
     name: 'Roby Karti S.',
@@ -122,10 +204,18 @@ const breadcrumbSchema = breadcrumbItems.length > 1 ? {
 <meta name="google-site-verification" content="0JqR3rz8B1BGb2jLQy78PSUGlldUXwXPsWTouL_Z4mA" />
 
 <!-- General SEO & Search Engine Crawling Directives -->
-<meta name="keywords" content="laravel security monitor, bulwark waf, laravel waf, web application firewall laravel, laravel rate limiting, device quarantine, webshell scanner, stepped brute force lockout, pure php waf, spatie standard laravel, keamanan laravel" />
+<meta name="keywords" content={allKeywords} />
 <meta name="author" content="Roby Karti S." />
 <meta name="theme-color" content="#0f172a" />
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+<!-- Geo & Local SEO Tags (Kota Pekanbaru, Riau, Indonesia) -->
+<meta name="geo.region" content="ID-RI" />
+<meta name="geo.placename" content="Pekanbaru" />
+<meta name="geo.position" content="0.5071;101.4478" />
+<meta name="ICBM" content="0.5071, 101.4478" />
+<meta name="coverage" content="Indonesia, Kota Pekanbaru, Riau" />
+<meta name="distribution" content="Global" />
 
 <!-- Structured Data (Schema.org JSON-LD) -->
 <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
