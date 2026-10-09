@@ -2,7 +2,7 @@
 title: "Panduan Instalasi & Migrasi"
 description: "Halaman ini memandu proses instalasi paket robyajo/laravel-security-monitor ke dalam aplikasi Laravel Anda."
 sidebar:
-  order: 2
+    order: 2
 ---
 
 Halaman ini memandu proses instalasi paket **`robyajo/laravel-security-monitor`** ke dalam aplikasi Laravel Anda.
@@ -89,21 +89,21 @@ Perintah ini akan secara otomatis:
 
 ### Opsi Perintah:
 
-| Opsi                 | Fungsi                                                                                                                    |
-| :------------------- | :------------------------------------------------------------------------------------------------------------------------ |
-| `--force`            | Menimpa seluruh berkas konfigurasi, migrasi, `nginx.conf`, dan `public/.htaccess` dengan template bawaan paket.           |
-| `--with-blade`       | Mempublikasikan tampilan dashboard monitoring Blade (Livewire Starter Kit — Pure Vanilla CSS).                            |
-| `--with-tsx`         | Mempublikasikan tampilan dashboard monitoring TSX (Inertia + React Starter Kit — Pure Vanilla CSS).                       |
-| `--with-both`        | Mempublikasikan kedua tampilan dashboard monitoring sekaligus (Blade & TSX).                                              |
-| `--stack=...`        | Menentukan stack dashboard yang ingin dipublikasikan (`blade`, `tsx`, `both`, `none`).                                    |
-| `--without-user-trait` | Melewatkan penyematan otomatis trait `HasSecurityRelations` ke model User.                                               |
-| `--without-middleware` | Melewatkan pendaftaran otomatis middleware WAF di `bootstrap/app.php` / `Kernel.php`.                                    |
-| `--without-routes`   | Melewatkan pembuatan berkas rute `routes/security.php` dan `routes/security-api.php`.                                     |
-| `--without-api`      | Melewatkan pemeriksaan dan instalasi rute API (`install:api`).                                                            |
-| `--without-nginx`    | Melewatkan publikasi berkas `nginx.conf` jika server Anda tidak menggunakan web server Nginx.                             |
-| `--without-htaccess` | Melewatkan pembaruan berkas `public/.htaccess` jika Anda menggunakan Nginx murni dan tidak memerlukan Apache `.htaccess`. |
-| `--with-htaccess`    | Memaksa pembaruan berkas `public/.htaccess` dengan aturan hardening keamanan paket.                                       |
-| `--without-env`      | Melewatkan penyematan variabel konfigurasi ke berkas `.env` dan `.env.example`.                                           |
+| Opsi                   | Fungsi                                                                                                                    |
+| :--------------------- | :------------------------------------------------------------------------------------------------------------------------ |
+| `--force`              | Menimpa seluruh berkas konfigurasi, migrasi, `nginx.conf`, dan `public/.htaccess` dengan template bawaan paket.           |
+| `--with-blade`         | Mempublikasikan tampilan dashboard monitoring Blade (Livewire Starter Kit — Pure Vanilla CSS).                            |
+| `--with-tsx`           | Mempublikasikan tampilan dashboard monitoring TSX (Inertia + React Starter Kit — Pure Vanilla CSS).                       |
+| `--with-both`          | Mempublikasikan kedua tampilan dashboard monitoring sekaligus (Blade & TSX).                                              |
+| `--stack=...`          | Menentukan stack dashboard yang ingin dipublikasikan (`blade`, `tsx`, `both`, `none`).                                    |
+| `--without-user-trait` | Melewatkan penyematan otomatis trait `HasSecurityRelations` ke model User.                                                |
+| `--without-middleware` | Melewatkan pendaftaran otomatis middleware WAF di `bootstrap/app.php` / `Kernel.php`.                                     |
+| `--without-routes`     | Melewatkan pembuatan berkas rute `routes/security.php` dan `routes/security-api.php`.                                     |
+| `--without-api`        | Melewatkan pemeriksaan dan instalasi rute API (`install:api`).                                                            |
+| `--without-nginx`      | Melewatkan publikasi berkas `nginx.conf` jika server Anda tidak menggunakan web server Nginx.                             |
+| `--without-htaccess`   | Melewatkan pembaruan berkas `public/.htaccess` jika Anda menggunakan Nginx murni dan tidak memerlukan Apache `.htaccess`. |
+| `--with-htaccess`      | Memaksa pembaruan berkas `public/.htaccess` dengan aturan hardening keamanan paket.                                       |
+| `--without-env`        | Melewatkan penyematan variabel konfigurasi ke berkas `.env` dan `.env.example`.                                           |
 
 ---
 
@@ -139,6 +139,7 @@ php artisan vendor:publish --tag=security-routes-api
 ```
 
 Berkas akan ditempatkan di:
+
 - `routes/security.php` (rute web dashboard yang langsung me-render view).
 - `routes/security-api.php` (rute headless REST API).
 
@@ -150,7 +151,7 @@ php artisan vendor:publish --tag=security-nginx
 
 Berkas akan ditempatkan di root proyek: `nginx.conf`.
 
-### 4. Publikasikan Template Apache `.htaccess` Hardened Saja
+### 5. Publikasikan Template Apache `.htaccess` Hardened Saja
 
 ```bash
 php artisan vendor:publish --tag=security-htaccess --force
@@ -158,13 +159,13 @@ php artisan vendor:publish --tag=security-htaccess --force
 
 Berkas akan ditempatkan di: `public/.htaccess`.
 
-### 5. Publikasikan Seluruh Aset Sekaligus
+### 6. Publikasikan Seluruh Aset Sekaligus
 
 ```bash
 php artisan vendor:publish --tag=security-all --force
 ```
 
-### 6. Publikasikan Dashboard Monitoring Starter Kit
+### 7. Publikasikan Dashboard Monitoring Starter Kit
 
 ```bash
 # Blade Starter Kit (Livewire + Flux UI)

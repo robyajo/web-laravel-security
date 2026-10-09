@@ -20,6 +20,9 @@ export default defineConfig({
   // chunk-nya wajar besar; naikkan ambang peringatan agar build tetap bersih.
   vite: {
     build: { chunkSizeWarningLimit: 1600 },
+    optimizeDeps: {
+      include: ["mermaid"],
+    },
   },
 
   integrations: [
