@@ -5,7 +5,7 @@
  *   POST /api/master/visitors
  *
  * Konfigurasi (opsional via env web):
- *   PUBLIC_VISITOR_API_URL  = URL endpoint API (default: https://superapp.pekanbaru.go.id/api/master/visitors)
+ *   PUBLIC_VISITOR_API_URL  = URL endpoint API (default: https://superapp-api.pekanbaru.go.id/api/master/visitors)
  *   PUBLIC_VISITOR_SITE_ID  = Identifier situs (default: laravel-security-monitor)
  */
 
@@ -18,7 +18,7 @@ interface VisitorPayload {
 
 const DEFAULT_API_URL =
   import.meta.env.PUBLIC_VISITOR_API_URL ||
-  'https://superapp.pekanbaru.go.id/api/master/visitors';
+  'https://superapp-api.pekanbaru.go.id/api/master/visitors';
 
 const SITE_ID =
   import.meta.env.PUBLIC_VISITOR_SITE_ID || 'laravel-security-monitor';
@@ -103,6 +103,7 @@ export async function trackPageView(customPath?: string): Promise<void> {
       body: JSON.stringify(payload),
       keepalive: true,
       mode: 'cors',
+      credentials: 'omit',
     });
   } catch {
     // Abaikan kegagalan jaringan atau pemblokiran adblocker agar situs tetap berjalan lancar.
@@ -134,3 +135,4 @@ export function initVisitorTracker(): void {
     void trackPageView();
   });
 }
+
