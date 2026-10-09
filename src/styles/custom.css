@@ -204,12 +204,20 @@ header.header {
 }
 
 /* --------------------------------------------------------------------------
-   RESPONSIF MOBILE: HEADER HANYA MENAMPILKAN LOGO SAJA
+   RESPONSIF MOBILE: HEADER MENAMPILKAN LOGO & "SECURITY MONITOR"
    -------------------------------------------------------------------------- */
 @media (max-width: 50rem) {
-	/* Sembunyikan teks nama dokumentasi dan badge versi di header mobile */
-	.site-title span {
+	/* Sembunyikan kata "Laravel" di mobile, tampilkan "Security Monitor" bersama icon */
+	.site-title .title-brand {
 		display: none !important;
+	}
+
+	.site-title .title-product {
+		display: inline !important;
+		font-weight: 700 !important;
+		font-size: 0.95rem !important;
+		color: var(--sl-color-white) !important;
+		letter-spacing: -0.02em !important;
 	}
 
 	.pkg-version {
@@ -217,18 +225,18 @@ header.header {
 	}
 
 	.title-wrapper {
-		gap: 0 !important;
+		gap: 0.5rem !important;
 		padding: 0 !important;
 		margin: 0 !important;
 	}
 
 	.site-title {
-		gap: 0 !important;
+		gap: 0.5rem !important;
 		padding: 0.2rem 0 !important;
 	}
 
 	.site-title img {
-		height: 2.25rem !important;
+		height: 1.85rem !important;
 		width: auto !important;
 		max-height: 100% !important;
 		display: block !important;

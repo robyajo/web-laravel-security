@@ -1,14 +1,42 @@
 ---
 // Override SiteTitle: tambahkan badge versi paket di samping judul situs.
-// Pada desktop: Logo + Nama Situs + Versi Packagist.
-// Pada mobile: HANYA TAMPILKAN LOGO SAJA di header untuk estetika responsif yang bersih.
-import Default from '@astrojs/starlight/components/SiteTitle.astro';
-import pkg from '../data/package.json';
+// Pada desktop: Logo + "Laravel Security Monitor" + Versi Packagist.
+// Pada mobile: Logo + "Security Monitor" (tanpa kata "Laravel" agar proporsional dan tidak terpotong).
+import { logos } from "virtual:starlight/user-images";
+import config from "virtual:starlight/user-config";
+import pkg from "../data/package.json";
 
+const { siteTitleHref } = Astro.locals.starlightRoute;
 const version = pkg.packagist?.version ?? pkg.version;
 ---
 
-<Default />
+<a href={siteTitleHref} class="site-title sl-flex">
+	{
+		config.logo && logos.dark && (
+			<>
+				<img
+					class:list={{ "light:sl-hidden print:hidden": !("src" in config.logo) }}
+					alt={config.logo.alt}
+					src={logos.dark.src}
+					width={logos.dark.width}
+					height={logos.dark.height}
+				/>
+				{!('src' in config.logo) && (
+					<img
+						class="dark:sl-hidden print:block"
+						alt={config.logo.alt}
+						src={logos.light?.src}
+						width={logos.light?.width}
+						height={logos.light?.height}
+					/>
+				)}
+			</>
+		)
+	}
+	<span class="site-title-text" translate="no">
+		<span class="title-brand">Laravel </span><span class="title-product">Security Monitor</span>
+	</span>
+</a>
 
 <a
 	class="pkg-version"
@@ -26,11 +54,44 @@ const version = pkg.packagist?.version ?? pkg.version;
 		align-items: center;
 	}
 
-	:global(.site-title) {
+	.site-title {
+		align-items: center;
+		gap: var(--sl-nav-gap, 0.75rem);
+		font-size: var(--sl-text-h4, 1.05rem);
 		font-family: var(--sl-font) !important;
 		font-weight: 700 !important;
 		letter-spacing: -0.02em !important;
+		color: var(--sl-color-white) !important;
+		text-decoration: none;
+		white-space: nowrap;
+		min-width: 0;
 		transition: opacity 0.15s ease;
+	}
+
+	.site-title:hover {
+		color: var(--sl-color-accent) !important;
+	}
+
+	.site-title img {
+		height: calc(var(--sl-nav-height, 3.5rem) - 2 * var(--sl-nav-pad-y, 0.75rem));
+		width: auto;
+		max-width: 100%;
+		object-fit: contain;
+		object-position: 0 50%;
+	}
+
+	.site-title-text {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.title-brand {
+		display: inline;
+	}
+
+	.title-product {
+		display: inline;
 	}
 
 	.pkg-version {
@@ -58,24 +119,38 @@ const version = pkg.packagist?.version ?? pkg.version;
 		background-color: var(--sl-color-accent-low);
 	}
 
-	/* Tampilan Responsif Mobile: Header hanya menampilkan Logo saja */
+	/* Tampilan Responsif Mobile: Tampilkan Icon + \"Security Monitor\" */
 	@media (max-width: 50rem) {
-		:global(.site-title span) {
-			display: none !important;
+		:global(.title-wrapper) {
+			gap: 0.5rem !important;
+			padding: 0 !important;
+			margin: 0 !important;
 		}
 
-		:global(.site-title img) {
-			height: 2.25rem !important;
+		.site-title {
+			gap: 0.5rem !important;
+			padding: 0.2rem 0 !important;
+			font-size: 0.95rem !important;
+			font-weight: 700 !important;
+		}
+
+		.site-title img {
+			height: 1.85rem !important;
 			width: auto !important;
 			max-height: 100% !important;
 			display: block !important;
 			object-fit: contain !important;
 		}
 
-		:global(.title-wrapper) {
-			gap: 0 !important;
-			padding: 0 !important;
-			margin: 0 !important;
+		/* Sembunyikan kata \"Laravel\" di mobile agar \"Security Monitor\" muat dengan rapi */
+		.title-brand {
+			display: none !important;
+		}
+
+		.title-product {
+			display: inline !important;
+			font-weight: 700 !important;
+			color: var(--sl-color-white) !important;
 		}
 
 		.pkg-version {
