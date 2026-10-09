@@ -11,7 +11,7 @@ export default defineConfig({
   //   - Ganti 'site' dengan domain Anda (dipakai canonical + sitemap).
   //   - Untuk deploy pada sub-path (mis. https://example.com/docs/),
   //     tambahkan baris:  base: '/docs'
-  site: "https://docs.example.com",
+  site: process.env.SITE_URL || "https://security-dev.pekanbaru.go.id",
 
   // Muat awal halaman tujuan saat tautan mulai terlihat (navigasi terasa instan).
   prefetch: true,

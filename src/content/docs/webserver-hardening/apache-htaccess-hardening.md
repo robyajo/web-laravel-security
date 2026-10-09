@@ -1,6 +1,6 @@
 ---
 title: "Hardening Apache Web Server (.htaccess)"
-description: "Halaman ini mendokumentasikan aturan keamanan berkas public/.htaccess yang disediakan oleh Laravel Security Monitor (Bulwark) untuk server yang menggunakan Apac"
+description: "Halaman ini mendokumentasikan aturan keamanan berkas public/.htaccess yang disediakan oleh Laravel Security Monitor (Bulwark) untuk server yang..."
 sidebar:
   order: 2
 ---

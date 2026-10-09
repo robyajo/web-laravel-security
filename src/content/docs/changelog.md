@@ -1,9 +1,9 @@
 ---
 title: "Changelog"
-description: "Riwayat lengkap perubahan paket robyajo/laravel-security-monitor. Versi terbaru: v2.0.5."
+description: "Riwayat lengkap perubahan paket robyajo/laravel-security-monitor. Versi terbaru: v2.0.10."
 ---
 
-Versi terbaru: **v2.0.5** · [Packagist](https://packagist.org/packages/robyajo/laravel-security-monitor) · [Repositori GitHub](https://github.com/robyajo/laravel-security-monitor)
+Versi terbaru: **v2.0.10** · [Packagist](https://packagist.org/packages/robyajo/laravel-security-monitor) · [Repositori GitHub](https://github.com/robyajo/laravel-security-monitor)
 
 All notable changes to `robyajo/laravel-security-monitor` will be documented in this file.
 

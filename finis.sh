@@ -89,7 +89,7 @@ fi
 
 # Parsing Argumen
 BRANCH_NAME=""
-TARGET_DIR="/var/www/laravel-security-monitor-docs"
+TARGET_DIR="/var/www/security-dev.pekanbaru.go.id/web-laravel-security"
 SKIP_PULL=false
 SKIP_DEPLOY=false
 HARD_RESET=false

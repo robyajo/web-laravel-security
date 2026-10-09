@@ -1,6 +1,6 @@
 ---
 title: "Stepped Login Lockout & Brute-Force Defense"
-description: "Serangan credential stuffing dan brute force menggunakan kamus kata sandi otomatis adalah salah satu vektor ancaman paling persisten terhadap endpoint otentikas"
+description: "Serangan credential stuffing dan brute force menggunakan kamus kata sandi otomatis adalah salah satu vektor ancaman paling persisten terhadap endpoint..."
 sidebar:
   order: 1
 ---

@@ -1,6 +1,6 @@
 ---
 title: "Pengenalan & Filosofi Arsitektur"
-description: "Dalam pengembangan aplikasi berbasis Laravel modern di lingkungan enterprise dan instansi pemerintah, tantangan keamanan web tidak lagi terbatas pada pencegahan"
+description: "Dalam pengembangan aplikasi berbasis Laravel modern di lingkungan enterprise dan instansi pemerintah, tantangan keamanan web tidak lagi terbatas pada..."
 sidebar:
   order: 1
 ---

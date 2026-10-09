@@ -1,6 +1,6 @@
 ---
 title: "Karantina Berbasis Perangkat (Device-Level Quarantine)"
-description: "Salah satu kelemahan terbesar sistem WAF dan fail2ban tradisional adalah ketergantungan mutlak pada alamat IP publik. Dalam ekosistem modern di mana NAT (Networ"
+description: "Salah satu kelemahan terbesar sistem WAF dan fail2ban tradisional adalah ketergantungan mutlak pada alamat IP publik. Dalam ekosistem modern di mana NAT..."
 sidebar:
   order: 2
 ---

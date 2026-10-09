@@ -1,6 +1,6 @@
 ---
 title: "Konfigurasi Lengkap & Environment Variable"
-description: "Seluruh perilaku robyajo/laravel-security-monitor dikontrol melalui berkas konfigurasi config/security.php. Konfigurasi ini dirancang agar dapat disesuaikan tan"
+description: "Seluruh perilaku robyajo/laravel-security-monitor dikontrol melalui berkas konfigurasi config/security.php. Konfigurasi ini dirancang agar dapat..."
 sidebar:
   order: 3
 ---

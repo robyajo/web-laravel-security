@@ -1,6 +1,6 @@
 ---
 title: "Model Database & Dynamic Decoupling"
-description: "Salah satu prinsip desain fundamental dari robyajo/laravel-security-monitor adalah Loose Coupling (keterikatan longgar). Paket ini tidak pernah mengasumsikan mo"
+description: "Salah satu prinsip desain fundamental dari robyajo/laravel-security-monitor adalah Loose Coupling (keterikatan longgar). Paket ini tidak pernah..."
 sidebar:
   order: 4
 ---

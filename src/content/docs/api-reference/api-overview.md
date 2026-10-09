@@ -1,6 +1,6 @@
 ---
 title: "Konvensi & Spesifikasi Headless REST API"
-description: "Seluruh fungsionalitas manajemen paket robyajo/laravel-security-monitor diekspos melalui antarmuka REST API JSON standar tanpa keterikatan antarmuka pengguna (h"
+description: "Seluruh fungsionalitas manajemen paket robyajo/laravel-security-monitor diekspos melalui antarmuka REST API JSON standar tanpa keterikatan antarmuka..."
 sidebar:
   order: 1
 ---

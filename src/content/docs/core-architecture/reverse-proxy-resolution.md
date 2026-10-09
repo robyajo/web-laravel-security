@@ -1,6 +1,6 @@
 ---
 title: "Resolusi Reverse Proxy & Deteksi IP Klien"
-description: "Dalam infrastruktur server produksi modern, aplikasi Laravel hampir selalu berjalan di belakang lapisan reverse proxy, Content Delivery Network (CDN), atau load"
+description: "Dalam infrastruktur server produksi modern, aplikasi Laravel hampir selalu berjalan di belakang lapisan reverse proxy, Content Delivery Network (CDN),..."
 sidebar:
   order: 3
 ---

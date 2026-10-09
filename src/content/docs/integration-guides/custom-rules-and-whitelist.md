@@ -1,6 +1,6 @@
 ---
 title: "Pembuatan Aturan Kustom & Whitelist Subnet"
-description: "Setiap aplikasi memiliki karakteristik lalu lintas data dan kebutuhan bisnis yang unik. Anda dapat memperluas aturan deteksi WAF bawaan dan mengonfigurasi penge"
+description: "Setiap aplikasi memiliki karakteristik lalu lintas data dan kebutuhan bisnis yang unik. Anda dapat memperluas aturan deteksi WAF bawaan dan mengonfigurasi..."
 sidebar:
   order: 3
 ---

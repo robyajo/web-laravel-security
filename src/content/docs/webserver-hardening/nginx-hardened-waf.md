@@ -1,6 +1,6 @@
 ---
 title: "Konfigurasi Nginx Hardened WAF (`nginx.conf`)"
-description: "Keamanan sebuah aplikasi web harus menerapkan prinsip Pertahanan Berlapis (Defense in Depth). WAF di tingkat aplikasi PHP sangat kuat dalam memahami logika bisn"
+description: "Keamanan sebuah aplikasi web harus menerapkan prinsip Pertahanan Berlapis (Defense in Depth). WAF di tingkat aplikasi PHP sangat kuat dalam memahami..."
 sidebar:
   order: 1
 ---

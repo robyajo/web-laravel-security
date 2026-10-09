@@ -1,6 +1,6 @@
 ---
 title: "Checklist Keamanan Produksi"
-description: "Gunakan daftar periksa (checklist) ini sebelum meluncurkan aplikasi ke lingkungan produksi untuk memastikan seluruh lapisan keamanan telah terpasang dengan bena"
+description: "Gunakan daftar periksa (checklist) ini sebelum meluncurkan aplikasi ke lingkungan produksi untuk memastikan seluruh lapisan keamanan telah terpasang..."
 sidebar:
   order: 3
 ---

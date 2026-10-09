@@ -1,6 +1,6 @@
 ---
 title: "Server Integrity & Webshell Scanner"
-description: "Ketika sebuah aplikasi web berhasil disusupi oleh penyerang, hal pertama yang biasanya mereka lakukan adalah menyisipkan webshell (backdoor script) atau menguba"
+description: "Ketika sebuah aplikasi web berhasil disusupi oleh penyerang, hal pertama yang biasanya mereka lakukan adalah menyisipkan webshell (backdoor script) atau..."
 sidebar:
   order: 3
 ---

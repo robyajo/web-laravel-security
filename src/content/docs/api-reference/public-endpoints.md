@@ -1,6 +1,6 @@
 ---
 title: "Endpoint REST API Publik"
-description: "Endpoint berikut dapat diakses oleh publik tanpa memerlukan token autentikasi. Endpoint ini dirancang khusus untuk memfasilitasi mekanisme pemulihan mandiri bag"
+description: "Endpoint berikut dapat diakses oleh publik tanpa memerlukan token autentikasi. Endpoint ini dirancang khusus untuk memfasilitasi mekanisme pemulihan..."
 sidebar:
   order: 2
 ---

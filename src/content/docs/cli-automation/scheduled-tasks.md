@@ -1,6 +1,6 @@
 ---
 title: "Tugas Terjadwal (Cron & Scheduler)"
-description: "SecurityMonitorServiceProvider menyertakan registrasi otomatis ke sistem scheduler bawaan Laravel (Illuminate\\Console\\Scheduling\\Schedule). Tugas-tugas ini bero"
+description: "SecurityMonitorServiceProvider menyertakan registrasi otomatis ke sistem scheduler bawaan Laravel (Illuminate\\Console\\Scheduling\\Schedule). Tugas-tugas..."
 sidebar:
   order: 2
 ---

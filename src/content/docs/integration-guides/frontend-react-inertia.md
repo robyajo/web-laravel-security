@@ -1,6 +1,6 @@
 ---
 title: "Integrasi Frontend React / Inertia"
-description: "Karena robyajo/laravel-security-monitor dirancang secara Headless (Pure REST API), Anda dapat membangun antarmuka dashboard keamanan dan penanganan error pemblo"
+description: "Karena robyajo/laravel-security-monitor dirancang secara Headless (Pure REST API), Anda dapat membangun antarmuka dashboard keamanan dan penanganan error..."
 sidebar:
   order: 1
 ---

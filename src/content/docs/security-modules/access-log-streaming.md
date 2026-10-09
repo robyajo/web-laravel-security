@@ -1,6 +1,6 @@
 ---
 title: "Streaming Access Log Scanner"
-description: "Sebagian besar serangan siber (seperti scanning direktori WordPress, probing phpmyadmin, pemindaian berkas .git, dan brute force HTTP dasar) ditolak langsung ol"
+description: "Sebagian besar serangan siber (seperti scanning direktori WordPress, probing phpmyadmin, pemindaian berkas .git, dan brute force HTTP dasar) ditolak..."
 sidebar:
   order: 4
 ---

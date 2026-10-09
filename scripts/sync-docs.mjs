@@ -53,13 +53,20 @@ function firstParagraph(body) {
       continue;
     }
 
-    return line
+    const cleaned = line
       .replace(/`/g, '')
       .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
       .replace(/[*_]/g, '')
       .replace(/\s+/g, ' ')
-      .slice(0, 160)
       .trim();
+
+    if (cleaned.length <= 155) {
+      return cleaned;
+    }
+
+    const truncated = cleaned.slice(0, 155);
+    const lastSpace = truncated.lastIndexOf(' ');
+    return (lastSpace > 80 ? truncated.slice(0, lastSpace) : truncated).trim() + '...';
   }
 
   return '';

@@ -1,6 +1,6 @@
 ---
 title: "Endpoint Pengguna Terautentikasi"
-description: "Endpoint pada bagian ini mewajibkan pengguna telah melakukan autentikasi (auth middleware) melalui sesi cookie web (Laravel Sanctum/Breeze) atau Bearer token."
+description: "Endpoint pada bagian ini mewajibkan pengguna telah melakukan autentikasi (auth middleware) melalui sesi cookie web (Laravel Sanctum/Breeze) atau Bearer..."
 sidebar:
   order: 3
 ---

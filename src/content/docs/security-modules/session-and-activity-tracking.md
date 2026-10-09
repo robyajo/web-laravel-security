@@ -1,6 +1,6 @@
 ---
 title: "Pelacakan Sesi & Pengguna Realtime"
-description: "Mengetahui siapa saja yang sedang aktif menggunakan aplikasi, dari perangkat apa, dan dari lokasi IP mana adalah bagian penting dari audit keamanan organisasi."
+description: "Mengetahui siapa saja yang sedang aktif menggunakan aplikasi, dari perangkat apa, dan dari lokasi IP mana adalah bagian penting dari audit keamanan..."
 sidebar:
   order: 6
 ---

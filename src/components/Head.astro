@@ -1,11 +1,134 @@
 ---
+import pkg from '../data/package.json';
+
 // Override komponen Head Starlight: pertahankan seluruh tag <head> bawaan,
-// lalu tambahkan skrip render Mermaid (di-bundle, hanya memuat pustaka mermaid
-// saat halaman benar-benar memuat diagram).
-const { head } = Astro.locals.starlightRoute;
+// lalu suntikkan metadata SEO lengkap (Open Graph, Twitter Cards, Schema.org JSON-LD,
+// breadcrumbs, dan robots crawl directives), serta skrip Mermaid.
+const { head, entry } = Astro.locals.starlightRoute;
+const title = entry.data.title;
+const description = entry.data.description || 'Dokumentasi resmi robyajo/laravel-security-monitor (Bulwark) — Enterprise Headless Web Application Firewall untuk Laravel.';
+const pathname = Astro.url.pathname;
+const siteOrigin = Astro.site ? Astro.site.origin : (Astro.url.origin || 'https://docs.example.com');
+const canonicalUrl = new URL(pathname, siteOrigin).href;
+const ogImageUrl = new URL('/og-image.png', siteOrigin).href;
+const isHome = pathname === '/' || pathname === '';
+
+// Structured Data Breadcrumbs (Schema.org)
+const breadcrumbItems = [
+  {
+    '@type': 'ListItem',
+    position: 1,
+    name: 'Beranda',
+    item: siteOrigin + '/',
+  },
+];
+
+const segments = pathname.split('/').filter(Boolean);
+if (segments.length > 0 && !isHome) {
+  let accumulatedPath = siteOrigin;
+  segments.forEach((seg, idx) => {
+    accumulatedPath += `/${seg}`;
+    const isLast = idx === segments.length - 1;
+    const readableName = isLast
+      ? title
+      : seg.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+
+    breadcrumbItems.push({
+      '@type': 'ListItem',
+      position: idx + 2,
+      name: readableName,
+      item: accumulatedPath + (isLast ? '' : '/'),
+    });
+  });
+}
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Laravel Security Monitor',
+  alternateName: ['Bulwark', 'robyajo/laravel-security-monitor'],
+  url: siteOrigin + '/',
+  description: 'Dokumentasi resmi robyajo/laravel-security-monitor (Bulwark) — Enterprise Headless Web Application Firewall & Audit Library untuk Laravel.',
+  inLanguage: 'id-ID',
+};
+
+const softwareSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Laravel Security Monitor (Bulwark)',
+  applicationCategory: 'SecurityApplication',
+  operatingSystem: 'PHP ^8.2 | ^8.3 | ^8.4, Laravel ^10 | ^11 | ^12 | ^13',
+  softwareVersion: pkg?.packagist?.version || '2.0.10',
+  license: 'https://opensource.org/licenses/MIT',
+  url: 'https://github.com/robyajo/laravel-security-monitor',
+  downloadUrl: 'https://packagist.org/packages/robyajo/laravel-security-monitor',
+  author: {
+    '@type': 'Person',
+    name: 'Roby Karti S.',
+    url: 'https://github.com/robyajo',
+  },
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+};
+
+const articleSchema = !isHome ? {
+  '@context': 'https://schema.org',
+  '@type': 'TechArticle',
+  headline: title,
+  description: description,
+  url: canonicalUrl,
+  inLanguage: 'id-ID',
+  author: {
+    '@type': 'Person',
+    name: 'Roby Karti S.',
+    url: 'https://github.com/robyajo',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Laravel Security Monitor',
+    url: siteOrigin + '/',
+    logo: {
+      '@type': 'ImageObject',
+      url: new URL('/favicon.svg', siteOrigin).href,
+    },
+  },
+} : null;
+
+const breadcrumbSchema = breadcrumbItems.length > 1 ? {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbItems,
+} : null;
 ---
 
 {head.map(({ tag: Tag, attrs, content }) => <Tag {...attrs} set:html={content} />)}
+
+<!-- Open Graph & Social Preview -->
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:alt" content="Laravel Security Monitor (Bulwark) — Enterprise Headless WAF" />
+<meta property="og:locale" content="id_ID" />
+<meta name="twitter:image" content={ogImageUrl} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+
+<!-- General SEO & Search Engine Crawling Directives -->
+<meta name="keywords" content="laravel security monitor, bulwark waf, laravel waf, web application firewall laravel, laravel rate limiting, device quarantine, webshell scanner, stepped brute force lockout, pure php waf, spatie standard laravel, keamanan laravel" />
+<meta name="author" content="Roby Karti S." />
+<meta name="theme-color" content="#0f172a" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+<!-- Structured Data (Schema.org JSON-LD) -->
+<script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(softwareSchema)} />
+{articleSchema && <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />}
+{breadcrumbSchema && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />}
 
 <script>
 	import { initMermaid } from '../scripts/mermaid';

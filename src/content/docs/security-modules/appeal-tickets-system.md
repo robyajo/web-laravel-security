@@ -1,6 +1,6 @@
 ---
 title: "Sistem Tiket Banding Pembukaan Blokir (Appeal Tickets)"
-description: "Dalam sistem keamanan otomatis, pemblokiran yang keliru (false positive) dapat terjadi, misalnya seorang staf salah mengetikkan simbol kode pada form input atau"
+description: "Dalam sistem keamanan otomatis, pemblokiran yang keliru (false positive) dapat terjadi, misalnya seorang staf salah mengetikkan simbol kode pada form..."
 sidebar:
   order: 5
 ---
