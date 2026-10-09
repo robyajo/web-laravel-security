@@ -1,9 +1,9 @@
 ---
 title: "Changelog"
-description: "Riwayat lengkap perubahan paket robyajo/laravel-security-monitor. Versi terbaru: v2.0.9."
+description: "Riwayat lengkap perubahan paket robyajo/laravel-security-monitor. Versi terbaru: v2.0.5."
 ---
 
-Versi terbaru: **v2.0.9** · [Packagist](https://packagist.org/packages/robyajo/laravel-security-monitor) · [Repositori GitHub](https://github.com/robyajo/laravel-security-monitor)
+Versi terbaru: **v2.0.5** · [Packagist](https://packagist.org/packages/robyajo/laravel-security-monitor) · [Repositori GitHub](https://github.com/robyajo/laravel-security-monitor)
 
 All notable changes to `robyajo/laravel-security-monitor` will be documented in this file.
 
@@ -12,8 +12,8 @@ All notable changes to `robyajo/laravel-security-monitor` will be documented in 
 ### Fixed
 
 - **Kompatibilitas CI & Test Matrix L10 - L13**:
-  - Menambahkan dependensi `guzzlehttp/guzzle: ^7.8|^8.0` pada `composer.json` untuk ketersediaan PSR-7 Response pada `Http::fake()` dan fitur `VersionCheckService` di Laravel 10.
-  - Memperbaiki analisis statis PHPStan pada evaluasi tipe `LoginThrottleService` dan `SecurityInstallCommand`.
+  - Menambahkan dependensi `guzzlehttp/guzzle: ^7.8|^8.0` pada `composer.json` untuk menjamin ketersediaan PSR-7 Response saat pengujian `Http::fake()` dan fitur `VersionCheckService` pada lingkungan Laravel 10.
+  - Memperbaiki analisis statis PHPStan pada evaluasi tipe dinamis `LoginThrottleService` dan `SecurityInstallCommand`.
   - Mengoptimalkan assertion command options pada `SecurityInstallAutoInjectTest`.
 
 ## [2.0.8] - 2026-10-05
@@ -21,29 +21,62 @@ All notable changes to `robyajo/laravel-security-monitor` will be documented in 
 ### Added
 
 - **Pemeriksaan Versi Otomatis & Notifikasi Upgrade di Terminal (`php artisan serve` & `composer run dev`)**:
-  - Memeriksa versi terbaru di Packagist/GitHub saat menjalankan `php artisan serve` atau `composer run dev` (`artisan dev`).
-  - Menampilkan notifikasi visual di terminal konsol jika versi baru telah dirilis.
-  - Ringan, non-blocking (timeout 2s), dan di-cache 1 jam (`SECURITY_VERSION_CHECK_CACHE_TTL=3600`).
-  - Perintah baru `php artisan security:upgrade` untuk pembaruan dan sinkronisasi otomatis seluruh komponen paket (Composer, migrasi, rute, view, dan cache).
-  - Integrasi informasi versi pada dashboard Pengaturan (`/security/settings`) dan REST API.
+  - Secara otomatis memeriksa apakah terdapat versi rilis terbaru di Packagist/GitHub saat pengembang menjalankan `php artisan serve` atau `composer run dev` (`artisan dev`).
+  - Menampilkan notifikasi visual di terminal konsol yang elegan dan informatif jika versi baru telah dirilis, lengkap dengan saran perintah upgrade.
+  - Pemeriksaan dirancang sangat ringan, non-blocking (timeout 2 detik), dan di-cache selama 1 jam (`SECURITY_VERSION_CHECK_CACHE_TTL=3600`) sehingga tidak pernah memperlambat atau mengganggu startup server.
+  - Dapat diaktifkan/dinonaktifkan melalui konfigurasi `security.version_check.enabled` atau variabel `.env`: `SECURITY_VERSION_CHECK_ENABLED=true`.
+
+- **Perintah Baru `php artisan security:upgrade`**:
+  - Perintah artisan terpadu untuk memeriksa, memperbarui, dan menyinkronkan seluruh komponen package:
+    - `php artisan security:upgrade`: Memperbarui package via Composer (`composer update robyajo/laravel-security-monitor`), menerapkan migrasi database terbaru (`php artisan migrate`), menyinkronkan rute kustom (`routes/security.php` & `routes/security-api.php`), menyinkronkan tampilan dashboard monitoring (Blade/Livewire & React/TSX), serta membersihkan cache framework.
+    - Opsi `--check`: Hanya memeriksa status versi tanpa menjalankan proses pembaruan.
+    - Opsi `--force`: Memaksa pembaruan dan sinkronisasi aset meskipun sudah di versi terbaru.
+    - Opsi `--no-composer`: Melewati pembaruan Composer (hanya sinkronisasi aset lokal).
+    - Opsi `--no-migrate`: Melewati eksekusi migrasi database.
+    - Opsi `--sync-routes` & `--sync-views`: Memaksa pembaruan berkas rute dan tampilan dashboard.
+
+- **Integrasi Informasi Versi pada Dashboard Pengaturan & REST API**:
+  - Halaman Pengaturan Keamanan (`/security/settings`) pada Livewire dan React kini menampilkan status versi aktif dan banner notifikasi pembaruan secara visual.
+  - Endpoint REST API `GET /api/security/settings` menyertakan metadata `version` (`current`, `latest`, `update_available`).
 
 ## [2.0.7] - 2026-10-05
 
 ### Added
 
-- **Halaman Pengaturan Keamanan Interaktif & Pengaturan Dinamis**:
-  - Halaman dashboard `/security/settings` untuk Blade/Livewire dan React/Inertia.
-  - Pilihan lingkup pemblokiran otomatis: Per Perangkat (`device`) vs Seluruh IP Router (`ip`).
-  - Multi-layer persistence: database `security_settings`, Cache real-time, dan sinkronisasi `.env`.
-  - Endpoint REST API `/api/security/settings`.
+- **Interactive Security Settings Page & Dynamic Configuration (Livewire, React, & REST API)**:
+  - Added dedicated Security Settings dashboard page accessible via `/security/settings` in both Livewire (`pages/security/settings.blade.php`) and React (`pages/security/settings.tsx`).
+  - Added Settings link (⚙️) to the sidebar navigation in both Blade and React dashboard layouts.
+  - Interactive radio cards allowing administrators to configure blocking scope with clear visual guidance:
+    - **Isolasi Perangkat Saja (`device`)** *(Default / Rekomendasi)*: Only quarantines the offending device based on Device ID / Fingerprint / LAN IP, keeping innocent users sharing the same WiFi or NAT router completely safe.
+    - **Seluruh IP Router Publik (`ip`)**: Quarantines the entire public router IP address.
+  - Dynamic configuration controls for:
+    - Automatic blocking scope (`auto_block_scope`: `device` or `ip`)
+    - Zero tolerance instant blocking scope (`instant_block_scope`: `device` or `ip`)
+    - Threshold count (`auto_block_threshold`)
+    - Accumulation window in minutes (`auto_block_window`)
+    - Quarantine duration in hours (`auto_block_duration`)
+    - Zero tolerance instant duration (`instant_block_duration`)
+    - HTTP 403 block enforcement master toggle (`block_enforcement`)
+  - Dynamic multi-layer persistence: `SecuritySetting` database model/migration, high-performance in-memory and Cache layer, with automatic `.env` synchronization.
+  - Headless REST API endpoints:
+    - `GET /api/security/settings` (retrieves current configuration)
+    - `POST /api/security/settings` (updates and applies settings with zero downtime)
+  - Added comprehensive feature tests in `tests/Feature/SecuritySettingsTest.php`.
 
 ## [2.0.6] - 2026-10-05
 
 ### Added
 
-- **Device-Scoped Automatic & Instant Blocking**:
-  - Isolasi tingkat perangkat untuk auto-block dan zero-tolerance instant block sehingga aman untuk pengguna dalam satu WiFi / NAT router.
-  - Device fingerprinting otomatis dan attachment cookie `app_device_id`.
+- **Device-Scoped Automatic & Instant Blocking (WiFi & NAT Router Isolation)**:
+  - Enforced device-level isolation for both threshold-based automatic blocking (`autoBlockIfNeeded`) and zero-tolerance instant blocking (`blockImmediately`), ensuring that only the specific attacking device is quarantined rather than blocking the entire public router IP or office/cafe WiFi network.
+  - Innocent users and colleagues sharing the same NAT public IP address can continue accessing the application without being affected or receiving HTTP 403 Forbidden.
+  - Added configurable blocking scopes in `config/security.php` and `stubs/env.stub`:
+    - `SECURITY_AUTO_BLOCK_SCOPE=device` (options: `device` or `ip`, default: `device`).
+    - `SECURITY_INSTANT_BLOCK_SCOPE=device` (options: `device` or `ip`, default: `device`).
+  - Deterministic client device fingerprinting (`generateDeviceFingerprint()`): automatically synthesizes client identifiers (`dev_*`) from User-Agent, language, and client platform hints when custom headers (`X-Device-Id`, `X-Client-Id`) are not explicitly sent.
+  - Persistent device cookie attachment: `BlockIpAddress` middleware attaches an `app_device_id` cookie to responses (including 403 Forbidden response pages) to guarantee seamless device tracking across subsequent visits.
+  - Updated `LogFailedLoginAttempt` and `LoginThrottleService` to track and pass device IDs and private LAN IPs discovered via WebRTC to brute-force lockout evaluations.
+  - Added end-to-end feature tests in `tests/Feature/DeviceLevelBlockingTest.php` verifying that two clients on the identical public router IP (`REMOTE_ADDR`) are isolated so that the attacker receives 403 Forbidden while the innocent device receives 200 OK.
 
 ## [2.0.5] - 2026-10-05
 
