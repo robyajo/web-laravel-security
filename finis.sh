@@ -89,9 +89,9 @@ fi
 
 # Parsing Argumen
 BRANCH_NAME=""
-TARGET_DIR="/var/www/security-dev.pekanbaru.go.id/web-laravel-security"
+TARGET_DIR=""
 SKIP_PULL=false
-SKIP_DEPLOY=false
+SKIP_DEPLOY=true
 HARD_RESET=false
 
 while [[ $# -gt 0 ]]; do
@@ -102,6 +102,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         -d|--deploy)
             TARGET_DIR="$2"
+            SKIP_DEPLOY=false
             shift 2
             ;;
         --no-pull)
@@ -224,9 +225,11 @@ fi
 
 if [ "$SKIP_DEPLOY" = true ]; then
     print_info "Melewatkan deployment (--no-deploy aktif). Situs siap di folder './dist'."
+elif [ -n "$TARGET_REAL_DIR" ] && [ "$CURRENT_REAL_DIR" = "$TARGET_REAL_DIR" ]; then
+    print_info "TARGET_DIR sama dengan folder repositori saat ini. Tidak perlu rsync (mencegah penimpaan berkas sumber)."
 elif [ -n "$TARGET_REAL_DIR" ] && [ "$CURRENT_REAL_DIR/dist" = "$TARGET_REAL_DIR" ]; then
     print_info "Folder dist/ saat ini sudah merupakan root web server. Tidak perlu sinkronisasi file."
-elif [ -d "$TARGET_DIR" ] || mkdir -p "$TARGET_DIR" 2>/dev/null; then
+elif [ -n "$TARGET_DIR" ] && ([ -d "$TARGET_DIR" ] || mkdir -p "$TARGET_DIR" 2>/dev/null); then
     print_info "Menyinkronkan isi folder dist/ ke ${BOLD}${TARGET_DIR}${NC}..."
     if command -v rsync >/dev/null 2>&1; then
         rsync -a --delete dist/ "$TARGET_DIR/"
